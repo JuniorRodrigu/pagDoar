@@ -17,7 +17,6 @@ function Form() {
     // aqui você pode enviar os dados para o servidor usando fetch, axios ou outra biblioteca
     alert('Obrigado pela sua doação!');
   }
-
   return (
     <div className='form'>
     <form onSubmit={handleFormSubmit}>
