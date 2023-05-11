@@ -61,7 +61,7 @@ export const App = () => {
 
   return (
     <div className="form">
-           <Link to='./Paga.js'>paga</Link>
+           
       <input
         type="text"
         placeholder="Nome"
