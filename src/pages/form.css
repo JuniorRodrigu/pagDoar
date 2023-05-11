@@ -28,8 +28,10 @@
 
 .form input {
     margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 .sms{
     height: 100px;
   }
   
+.bt{margin-top: 9px;}
