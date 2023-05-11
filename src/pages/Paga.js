@@ -8,3 +8,5 @@ function Paga() {
     </div>
   )
 }
+
+export default Paga
