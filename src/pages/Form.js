@@ -11,6 +11,7 @@ import {
 import "./form.css";
 import "../Modal";
 import Modal from "../Modal";
+import Paga from "./Paga";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -130,14 +131,9 @@ export const App = () => {
       </ul>
     
       <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
-        Conteúdo do modal
+      <Paga/>
       </Modal>
-      <Modal
-        isOpen={openModal2}
-        setModalOpen={() => setOpenModal2(!openModal2)}
-      >
-        Conteúdo do modal 2
-      </Modal>
+      
     </div> 
   );
 };
