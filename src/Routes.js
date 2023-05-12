@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import App from './App';
-import Paga from './Paga';
+import Paga from './pages/Paga';
 
 const Routes = () => (
   <Switch>

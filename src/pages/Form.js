@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, doc, deleteDoc, getDocs } from 'firebase/firestore';
-import './form.css';
-import{Switch, Route, Link} from 'react-router-dom'
-import Paga from './Paga';
-
-
-
+import React, { useState, useEffect } from "react";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  deleteDoc,
+  getDocs,
+} from "firebase/firestore";
+import "./form.css";
+import "../Modal";
+import Modal from "../Modal";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -35,11 +39,12 @@ export const App = () => {
         address,
         message,
         value,
+        status: "pendente", // adicione o campo "status" com valor "pendente"
       });
 
       console.log("dados salvos com sucesso", user);
       // Atualizar a página
-      window.location.reload();
+    
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -56,12 +61,15 @@ export const App = () => {
   async function deleteUser(id) {
     const userDoc = doc(db, "users", id);
     await deleteDoc(userDoc);
-    window.location.reload();
+  
   }
+    const [openModal, setOpenModal] = useState(false)
+  const [openModal2, setOpenModal2] = useState(false)
 
   return (
+    
     <div className="form">
-           
+     
       <input
         type="text"
         placeholder="Nome"
@@ -86,20 +94,24 @@ export const App = () => {
         value={address}
         onChange={(e) => setAddress(e.target.value)}
       />
-    <textarea
-  placeholder="Mensagem"
-  value={message}
-  onChange={(e) => setMessage(e.target.value)}
-  rows={5}
-/>
+      <textarea
+        placeholder="Mensagem"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows={5}
+      />
       <input
         type="text"
         placeholder="Valor"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button className='bt' onClick={criarDado}>Criar dado</button>
-
+     <button className="bt" onClick={() => {
+  criarDado();
+  setOpenModal(true);
+}}>
+  Criar dado e abrir modal
+</button>
       <ul>
         {users.map((user) => {
           return (
@@ -110,13 +122,23 @@ export const App = () => {
               <li>{user.address}</li>
               <li>{user.message}</li>
               <li>{user.value}</li>
+              <li>{user.status}</li>
               <button onClick={() => deleteUser(user.id)}>Deletar</button>
             </React.Fragment>
           );
         })}
       </ul>
-
-    </div>
+    
+      <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
+        Conteúdo do modal
+      </Modal>
+      <Modal
+        isOpen={openModal2}
+        setModalOpen={() => setOpenModal2(!openModal2)}
+      >
+        Conteúdo do modal 2
+      </Modal>
+    </div> 
   );
 };
 
