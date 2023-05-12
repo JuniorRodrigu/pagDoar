@@ -12,6 +12,7 @@ import "./form.css";
 import "../Modal";
 import Modal from "../Modal";
 import Paga from "./Paga";
+import NumberFormat from 'react-number-format';
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -101,12 +102,16 @@ export const App = () => {
         onChange={(e) => setMessage(e.target.value)}
         rows={5}
       />
-      <input
-        type="text"
-        placeholder="Valor"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <NumberFormat
+  placeholder="Valor"
+  value={value}
+  thousandSeparator={true}
+  prefix={'R$ '}
+  onValueChange={(values) => {
+    setValue(values.value);
+  }}
+/>
+
      <button className="bt" onClick={() => {
   criarDado();
   setOpenModal(true);
