@@ -102,7 +102,7 @@ export const App = () => {
         rows={5}
       />
       <input
-        type="text"
+        type="number"
         placeholder="Valor"
         value={value}
         onChange={(e) => setValue(e.target.value)}
