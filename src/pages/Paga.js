@@ -83,8 +83,8 @@ function Paga() {
         {linkBuyMercadoPago && !statusPayment && (
           <iframe
             src={linkBuyMercadoPago}
-            width="400px"
-            height="620px"
+            width="100%"
+            height="900px"
             title="link_buy"
           />
         )}
@@ -94,3 +94,4 @@ function Paga() {
 }
 
 export default Paga;
+

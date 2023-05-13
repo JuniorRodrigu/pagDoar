@@ -13,6 +13,7 @@ import "../Modal";
 import Modal from "../Modal";
 import Paga from "./Paga";
 import CurrencyInput from 'react-currency-input-field';
+import InputMask from "react-input-mask";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -84,12 +85,16 @@ export const App = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="Telefone"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-      />
+ <div>
+  
+  <InputMask
+   type="text"
+   placeholder="Telefone"
+    mask="(99) 99999-9999"
+    value={phone}
+    onChange={(e) => setPhone(e.target.value)}
+  />
+</div>
       <input
         type="text"
         placeholder="Endereço"
@@ -110,12 +115,17 @@ export const App = () => {
   groupSeparator="."
   onValueChange={(value) => setValue(value)}
 />
-     <button className="bt" onClick={() => {
-  criarDado();
-  setOpenModal(true);
+<button className="bt" onClick={() => {
+  if (nome && email && phone && address && value) {
+    criarDado();
+    setOpenModal(true);
+  } else {
+    alert("Por favor, preencha todos os campos obrigatórios");
+  }
 }}>
   Criar dado e abrir modal
 </button>
+
       <ul>
         {users.map((user) => {
           return (

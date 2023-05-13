@@ -17,6 +17,7 @@ export default function Modal({ isOpen, setModalOpen, children }) {
           <div>{children}</div>
           <button onClick={closeModal}>Cancelar</button>
         </div>
+        
       </div>
     )
   }
