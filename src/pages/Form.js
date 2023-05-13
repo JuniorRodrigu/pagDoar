@@ -12,6 +12,7 @@ import "./form.css";
 import "../Modal";
 import Modal from "../Modal";
 import Paga from "./Paga";
+import NumberFormat from 'react-number-format';
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -102,7 +103,7 @@ export const App = () => {
         rows={5}
       />
       <input
-        type="number"
+        type="text"
         placeholder="Valor"
         value={value}
         onChange={(e) => setValue(e.target.value)}
