@@ -19,12 +19,12 @@ const formReducer = (state, event) => {
   };
 };
 
-function Paga() {
+function Paga(props) {
   const [formData, setFormdata] = useReducer(formReducer, {});
   const [responsePayment, setResponsePayment] = useState(false);
   const [linkBuyMercadoPago, setLinkBuyMercadoPago] = useState(false);
   const [statusPayment, setStatusPayment] = useState(false);
-
+  const [transactionAmount, setTransactionAmount] = useState(props.transactionAmount);
   const handleChange = (event) => {
     setFormdata({
       name: event.target.name,
@@ -45,7 +45,7 @@ function Paga() {
     }
 
     const body = {
-      transaction_amount: 1,
+      transaction_amount: 2,
       description: "Produto teste de desenvolvimento",
       payment_method_id: "pix",
       payer: {
@@ -84,7 +84,7 @@ function Paga() {
           <iframe
             src={linkBuyMercadoPago}
             width="100%"
-            height="900px"
+            height="500px"
             title="link_buy"
           />
         )}

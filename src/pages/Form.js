@@ -14,6 +14,8 @@ import Modal from "../Modal";
 import Paga from "./Paga";
 import CurrencyInput from 'react-currency-input-field';
 import InputMask from "react-input-mask";
+import PagaComponent from "./Paga";
+
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -126,6 +128,11 @@ export const App = () => {
   Criar dado e abrir modal
 </button>
 
+<Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
+  <Paga transactionAmount={value} />
+</Modal>
+
+
       <ul>
         {users.map((user) => {
           return (
@@ -143,10 +150,7 @@ export const App = () => {
         })}
       </ul>
     
-      <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
-      <Paga/>
-      </Modal>
-      
+     
     </div> 
   );
 };
