@@ -1,10 +1,24 @@
 import React, { useReducer, useState, useEffect } from "react";
 import axios from "axios";
-
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  doc,
+  deleteDoc,
+  getDocs,
+} from "firebase/firestore";
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
+  authDomain: "doarcao-cd553.firebaseapp.com",
+  projectId: "doarcao-cd553",
+});
 const api = axios.create({
   baseURL: "https://api.mercadopago.com"
 });
-
+const db = getFirestore(firebaseApp);
+const usersCollectionRef = collection(db, "users");
 api.interceptors.request.use(async (config) => {
   const token = process.env.REACT_APP_TOKEN_MERCADO_PAGO_PUBLIC;
   config.headers.Authorization = `Bearer APP_USR-8695569384609059-042822-a13531b6ad0df397a0052de6523a47b6-200617663`;
@@ -78,17 +92,19 @@ function Paga(props) {
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="pix">
+      <header>
         {linkBuyMercadoPago && !statusPayment && (
           <iframe
             src={linkBuyMercadoPago}
             width="100%"
-            height="500px"
+            height="800px " 
             title="link_buy"
           />
         )}
+        
       </header>
+      
     </div>
   );
 }

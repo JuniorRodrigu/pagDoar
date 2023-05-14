@@ -15,7 +15,7 @@ export default function Modal({ isOpen, setModalOpen, children }) {
             x
           </div>
           <div>{children}</div>
-          <button onClick={closeModal}>Cancelar</button>
+          
         </div>
         
       </div>
