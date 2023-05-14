@@ -8,12 +8,14 @@ import {
   doc,
   deleteDoc,
   getDocs,
+  onSnapshot,
 } from "firebase/firestore";
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
   authDomain: "doarcao-cd553.firebaseapp.com",
   projectId: "doarcao-cd553",
 });
+
 const api = axios.create({
   baseURL: "https://api.mercadopago.com"
 });
@@ -34,6 +36,19 @@ const formReducer = (state, event) => {
 };
 
 function Paga(props) {
+ const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  
+    // retorna a função unsubscribe para limpar o ouvinte quando o componente for desmontado
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const [formData, setFormdata] = useReducer(formReducer, {});
   const [responsePayment, setResponsePayment] = useState(false);
   const [linkBuyMercadoPago, setLinkBuyMercadoPago] = useState(false);
@@ -104,7 +119,17 @@ function Paga(props) {
         )}
         
       </header>
-      
+        <div className="form">
+            <ul>
+              {users.map((user) => {
+                return (
+                  <React.Fragment key={user.id}>
+                    <li>{user.value}</li>
+                  </React.Fragment>
+                );
+              })}
+            </ul>
+          </div>
     </div>
   );
 }

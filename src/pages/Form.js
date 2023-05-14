@@ -7,6 +7,7 @@ import {
   doc,
   deleteDoc,
   getDocs,
+  onSnapshot,
 } from "firebase/firestore";
 import "./form.css";
 import "../Modal";
@@ -34,7 +35,11 @@ export const App = () => {
 
   const db = getFirestore(firebaseApp);
   const usersCollectionRef = collection(db, "users");
+const [paymentAmount, setPaymentAmount] = useState("");
 
+const handlePaymentAmountChange = (event, value) => {
+  setPaymentAmount(value);
+};
   async function criarDado() {
     try {
       const user = await addDoc(collection(db, "users"), {
@@ -56,11 +61,14 @@ export const App = () => {
   }
 
   useEffect(() => {
-    const getUsers = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  
+    // retorna a função unsubscribe para limpar o ouvinte quando o componente for desmontado
+    return () => {
+      unsubscribe();
     };
-    getUsers();
   }, []);
 
   async function deleteUser(id) {

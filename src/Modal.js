@@ -1,26 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import "./modal.css";
+import { initializeApp } from "firebase/app";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  deleteDoc,
+  onSnapshot,
+} from "firebase/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
+  authDomain: "doarcao-cd553.firebaseapp.com",
+  projectId: "doarcao-cd553",
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const usersCollectionRef = collection(db, "users");
 
 export default function Modal({ isOpen, setModalOpen, children }) {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    });
+  
+    // retorna a função unsubscribe para limpar o ouvinte quando o componente for desmontado
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  
+
+  const deleteUser = async (id) => {
+    const userDoc = doc(db, "users", id);
+    await deleteDoc(userDoc);
+    window.location.reload();
+  };
+
   const closeModal = () => {
-    setModalOpen(false)
-    window.location.reload()
-  }
+    setModalOpen(false);
+  };
 
   if (isOpen) {
     return (
-      <div className="BACKGROUND_STYLE" >
+      <div className="BACKGROUND_STYLE">
         <div className="MODAL_STYLE">
           <div className="CLOSE_STYLE" onClick={closeModal}>
-            x
+            Fechar
           </div>
           <div>{children}</div>
-          
+
+          <div className="form">
+            <ul>
+              {users.map((user) => {
+                return (
+                  <React.Fragment key={user.id}>
+                    <li>{user.nome}</li>
+                    <li>{user.id}</li>
+                    <li>{user.status}</li>
+                  </React.Fragment>
+                );
+              })}
+            </ul>
+          </div>
         </div>
-        
       </div>
-    )
+    );
   }
 
-  return null
+  return null;
 };
