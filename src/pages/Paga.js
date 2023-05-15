@@ -25,7 +25,7 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   const token = process.env.REACT_APP_TOKEN_MERCADO_PAGO_PUBLIC;
-  config.headers.Authorization = `Bearer Bearer APP_USR-8695569384609059-042822-a13531b6ad0df397a0052de6523a47b6-200617663`;
+  config.headers.Authorization = `Bearer APP_USR-8695569384609059-042822-a13531b6ad0df397a0052de6523a47b6-200617663`;
 
   return config;
 });
@@ -39,31 +39,42 @@ const formReducer = (state, event) => {
 
 function Paga(props) {
   const [lastUser, setLastUser] = useState(null);
-  
+
+  // Obtém o último usuário adicionado ao Firestore
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-        // ordena os documentos pelo campo "createdAt" em ordem decrescente
+        // Ordena os documentos pelo campo "createdAt" em ordem decrescente
         const sortedDocs = snapshot.docs.sort((a, b) => b.data().createdAt - a.data().createdAt);
-        // obtém o último documento adicionado
+        // Obtém o último documento adicionado
         const lastDoc = sortedDocs[0];
         if (lastDoc) {
           setLastUser({ ...lastDoc.data(), id: lastDoc.id });
         }
       });
-    }, 900); // aguarda 2 segundos antes de buscar o último usuário adicionado
-  
+    }, 900); // Aguarda 900ms (0.9s) antes de buscar o último usuário adicionado
+
     return () => {
       clearTimeout(timeoutId);
     };
   }, []);
-  
 
+  // Reducer para o estado do formulário
   const [formData, setFormdata] = useReducer(formReducer, {});
+
+  // Estado para armazenar a resposta do pagamento
   const [responsePayment, setResponsePayment] = useState(false);
+
+  // Estado para armazenar o link de pagamento do Mercado Pago
   const [linkBuyMercadoPago, setLinkBuyMercadoPago] = useState(false);
+
+  // Estado para armazenar o status do pagamento
   const [statusPayment, setStatusPayment] = useState(false);
-  const [transactionAmount, setTransactionAmount] = useState(props.transactionAmount);
+
+  // Estado para armazenar o valor da transação
+  const [transactionAmount, setTransactionAmount] = useState(parseFloat(props.transactionAmount));
+
+  // Handler para atualizar o estado do formulário
   const handleChange = (event) => {
     setFormdata({
       name: event.target.name,
@@ -71,20 +82,24 @@ function Paga(props) {
     });
   };
 
+  // Função para obter o status do pagamento no Mercado Pago
   const getStatusPayment = () => {
     api.get(`v1/payments/${responsePayment.data.id}`).then((response) => {
       if (response.data.status === "approved") {
+        setStatusPayment(true);
       }
     });
   };
 
+  // Handler para enviar a solicitação de pagamento ao Mercado Pago
   const handleSubmit = (event) => {
     if (event) {
       event.preventDefault();
     }
-    const transactionAmount = parseFloat(formData.transaction_amount);
+
+    // Cria um objeto com os dados da transação
     const body = {
-      transaction_amount:  formData.transaction_amount,
+      transaction_amount: transactionAmount,
       description: "Produto teste de desenvolvimento",
       payment_method_id: "pix",
       payer: {
@@ -99,6 +114,7 @@ function Paga(props) {
       notification_url: "https://eorpjcvcjvhqnq6.m.pipedream.net"
     };
 
+    // Envia a solicitação de pagamento ao Mercado Pago
     api
       .post("v1/payments", body)
       .then((response) => {
@@ -106,13 +122,14 @@ function Paga(props) {
         setLinkBuyMercadoPago(
           response.data.point_of_interaction.transaction_data.ticket_url
         );
-        setTransactionAmount(formData.transaction_amount);
+        setTransactionAmount(parseFloat(formData.transaction_amount));
       })
       .catch((err) => {
-        // alert(err)
+        console.error(err);
       });
   };
 
+  // Envia a solicitação de pagamento ao carregar o componente
   useEffect(() => {
     handleSubmit();
   }, []);
