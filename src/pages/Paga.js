@@ -16,14 +16,16 @@ const firebaseApp = initializeApp({
   projectId: "doarcao-cd553",
 });
 
+
+const db = getFirestore(firebaseApp);
+const usersCollectionRef = collection(db, "users");
 const api = axios.create({
   baseURL: "https://api.mercadopago.com"
 });
-const db = getFirestore(firebaseApp);
-const usersCollectionRef = collection(db, "users");
+
 api.interceptors.request.use(async (config) => {
   const token = process.env.REACT_APP_TOKEN_MERCADO_PAGO_PUBLIC;
-  config.headers.Authorization = `Bearer APP_USR-8695569384609059-042822-a13531b6ad0df397a0052de6523a47b6-200617663`;
+  config.headers.Authorization = `Bearer Bearer APP_USR-8695569384609059-042822-a13531b6ad0df397a0052de6523a47b6-200617663`;
 
   return config;
 });
@@ -36,18 +38,26 @@ const formReducer = (state, event) => {
 };
 
 function Paga(props) {
- const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
-      setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    });
+  const [lastUser, setLastUser] = useState(null);
   
-    // retorna a função unsubscribe para limpar o ouvinte quando o componente for desmontado
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+        // ordena os documentos pelo campo "createdAt" em ordem decrescente
+        const sortedDocs = snapshot.docs.sort((a, b) => b.data().createdAt - a.data().createdAt);
+        // obtém o último documento adicionado
+        const lastDoc = sortedDocs[0];
+        if (lastDoc) {
+          setLastUser({ ...lastDoc.data(), id: lastDoc.id });
+        }
+      });
+    }, 900); // aguarda 2 segundos antes de buscar o último usuário adicionado
+  
     return () => {
-      unsubscribe();
+      clearTimeout(timeoutId);
     };
   }, []);
+  
 
   const [formData, setFormdata] = useReducer(formReducer, {});
   const [responsePayment, setResponsePayment] = useState(false);
@@ -72,9 +82,9 @@ function Paga(props) {
     if (event) {
       event.preventDefault();
     }
-
+    const transactionAmount = parseFloat(formData.transaction_amount);
     const body = {
-      transaction_amount: 2,
+      transaction_amount:  formData.transaction_amount,
       description: "Produto teste de desenvolvimento",
       payment_method_id: "pix",
       payer: {
@@ -96,6 +106,7 @@ function Paga(props) {
         setLinkBuyMercadoPago(
           response.data.point_of_interaction.transaction_data.ticket_url
         );
+        setTransactionAmount(formData.transaction_amount);
       })
       .catch((err) => {
         // alert(err)
@@ -120,15 +131,11 @@ function Paga(props) {
         
       </header>
         <div className="form">
-            <ul>
-              {users.map((user) => {
-                return (
-                  <React.Fragment key={user.id}>
-                    <li>{user.value}</li>
-                  </React.Fragment>
-                );
-              })}
-            </ul>
+      {lastUser && (
+          <ul>
+            <li>{lastUser.name} {lastUser.value}</li>
+          </ul>
+        )}
           </div>
     </div>
   );

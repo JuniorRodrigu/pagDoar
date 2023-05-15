@@ -16,6 +16,7 @@ import Paga from "./Paga";
 import CurrencyInput from 'react-currency-input-field';
 import InputMask from "react-input-mask";
 import PagaComponent from "./Paga";
+import { serverTimestamp } from 'firebase/firestore';
 
 
 const firebaseApp = initializeApp({
@@ -25,6 +26,8 @@ const firebaseApp = initializeApp({
 });
 
 export const App = () => {
+  
+  const createdAt = serverTimestamp();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -49,7 +52,8 @@ const handlePaymentAmountChange = (event, value) => {
         address,
         message,
         value,
-        status: "pendente", // adicione o campo "status" com valor "pendente"
+        status: "pendente", 
+        createdAt: createdAt,
       });
 
       console.log("dados salvos com sucesso", user);
