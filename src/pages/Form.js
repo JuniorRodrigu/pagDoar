@@ -86,39 +86,43 @@ const handlePaymentAmountChange = (event, value) => {
   return (
     
     <div className="form">
-     
-      <input
-        type="text"
-        placeholder="Nome"
-        value={nome}
-        onChange={(e) => setNome(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="E-mail"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        
-      />
-        <InputMask
-   type="text"
-   placeholder="Telefone"
-    mask="(99) 99999-9999"
-    value={phone}
-    onChange={(e) => setPhone(e.target.value)}
-  />
-      <input
-        type="text"
-        placeholder="Endereço"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
-      />
-      <textarea
-        placeholder="Mensagem"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        rows={5}
-      />
+<input
+  type="text"
+  placeholder="Nome"
+  value={nome}
+  onChange={(e) => setNome(e.target.value)}
+  className="input-large"
+/>
+<input
+  type="email"
+  placeholder="E-mail"
+  value={email}
+  onChange={(e) => setEmail(e.target.value)}
+  className="input-large"
+/>
+<InputMask
+  type="text"
+  placeholder="Telefone"
+  mask="(99) 99999-9999"
+  value={phone}
+  onChange={(e) => setPhone(e.target.value)}
+  className="input-large"
+/>
+<input
+  type="text"
+  placeholder="Endereço"
+  value={address}
+  onChange={(e) => setAddress(e.target.value)}
+  className="input-large"
+/>
+<textarea
+  placeholder="Mensagem"
+  value={message}
+  onChange={(e) => setMessage(e.target.value)}
+  rows={5}
+  className="textarea-large"
+></textarea>
+
   <CurrencyInput
   id="value"
   placeholder="Valor"
