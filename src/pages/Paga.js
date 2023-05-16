@@ -142,7 +142,7 @@ function Paga(props) {
             src={linkBuyMercadoPago}
             width="100%"
             height="800px " 
-  border-radius: 0.5rem;
+  border-radius: "0.5rem"
             title="link_buy"
           />
         )}
