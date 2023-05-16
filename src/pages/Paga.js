@@ -111,7 +111,7 @@ function Paga(props) {
           number: "01234567890"
         }
       },
-      notification_url: "https://eorpjcvcjvhqnq6.m.pipedream.net"
+      notification_url: "https://hooks.slack.com/mppagamentor"
     };
 
     // Envia a solicitação de pagamento ao Mercado Pago
