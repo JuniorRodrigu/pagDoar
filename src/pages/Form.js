@@ -107,10 +107,6 @@ const handlePaymentAmountChange = (event, value) => {
     value={phone}
     onChange={(e) => setPhone(e.target.value)}
   />
- <div>
-  
-
-</div>
       <input
         type="text"
         placeholder="Endereço"
@@ -141,6 +137,11 @@ const handlePaymentAmountChange = (event, value) => {
 }}>
   Criar dado e abrir modal
 </button>
+ <div>
+  
+
+</div>
+  
 
 <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
   <Paga transactionAmount={value} />
