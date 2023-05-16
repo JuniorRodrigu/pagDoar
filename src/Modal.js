@@ -51,23 +51,11 @@ export default function Modal({ isOpen, setModalOpen, children }) {
       <div className="BACKGROUND_STYLE">
         <div className="MODAL_STYLE">
           <div className="CLOSE_STYLE" onClick={closeModal}>
-            Fechar
+            X
           </div>
           <div>{children}</div>
 
-          <div className="form">
-            <ul>
-              {users.map((user) => {
-                return (
-                  <React.Fragment key={user.id}>
-                    <li>{user.nome}</li>
-                    <li>{user.id}</li>
-                    <li>{user.status}</li>
-                  </React.Fragment>
-                );
-              })}
-            </ul>
-          </div>
+     
         </div>
       </div>
     );

@@ -98,16 +98,18 @@ const handlePaymentAmountChange = (event, value) => {
         placeholder="E-mail"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
+        
       />
- <div>
-  
-  <InputMask
+        <InputMask
    type="text"
    placeholder="Telefone"
     mask="(99) 99999-9999"
     value={phone}
     onChange={(e) => setPhone(e.target.value)}
   />
+ <div>
+  
+
 </div>
       <input
         type="text"
@@ -144,25 +146,7 @@ const handlePaymentAmountChange = (event, value) => {
   <Paga transactionAmount={value} />
 </Modal>
 
-
-      <ul>
-        {users.map((user) => {
-          return (
-            <React.Fragment key={user.id}>
-              <li>{user.nome}</li>
-              <li>{user.email}</li>
-              <li>{user.phone}</li>
-              <li>{user.address}</li>
-              <li>{user.message}</li>
-              <li>{user.value}</li>
-              <li>{user.status}</li>
-              <button onClick={() => deleteUser(user.id)}>Deletar</button>
-            </React.Fragment>
-          );
-        })}
-      </ul>
-    
-     
+   
     </div> 
   );
 };

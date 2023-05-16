@@ -147,13 +147,7 @@ function Paga(props) {
         )}
         
       </header>
-        <div className="form">
-      {lastUser && (
-          <ul>
-            <li>{lastUser.name} {lastUser.value}</li>
-          </ul>
-        )}
-          </div>
+     
     </div>
   );
 }
