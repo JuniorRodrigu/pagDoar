@@ -139,7 +139,7 @@ const handlePaymentAmountChange = (event, value) => {
     alert("Por favor, preencha todos os campos obrigatórios");
   }
 }}>
-  Criar dado e abrir modal
+  Doar
 </button>
  <div>
   
