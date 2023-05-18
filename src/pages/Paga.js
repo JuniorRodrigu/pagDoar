@@ -2,6 +2,7 @@ import React, { useReducer, useState, useEffect } from "react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import PaymentModal from "./PaymentModal";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -27,6 +28,7 @@ const formReducer = (state, event) => {
 };
 
 function Paga(props) {
+  const [showModal, setShowModal] = useState(false);
   const [responsePayment, setResponsePayment] = useState(null);
   const [statusPayment, setStatusPayment] = useState(false);
   const [transactionAmount, setTransactionAmount] = useState(parseFloat(props.transactionAmount));
@@ -97,12 +99,10 @@ function Paga(props) {
   useEffect(() => {
     handleSubmit();
   }, [formData]);
-
-  useEffect(() => {
-    if (statusPayment) {
-      window.location.reload();
-    }
-  }, [statusPayment]);
+  
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="pix">
@@ -119,6 +119,7 @@ function Paga(props) {
           />
         )}
       </header>
+      {showModal && <PaymentModal closeModal={closeModal} />}
     </div>
   );
 }
