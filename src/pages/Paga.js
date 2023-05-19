@@ -1,8 +1,8 @@
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import PaymentModal from "./PaymentModal";
+import PaymentModal from "./Payme";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -31,7 +31,9 @@ function Paga(props) {
   const [showModal, setShowModal] = useState(false);
   const [responsePayment, setResponsePayment] = useState(null);
   const [statusPayment, setStatusPayment] = useState(false);
-  const [transactionAmount, setTransactionAmount] = useState(parseFloat(props.transactionAmount));
+  const [transactionAmount, setTransactionAmount] = useState(
+    parseFloat(props.transactionAmount)
+  );
   const [formData, setFormdata] = useReducer(formReducer, {});
   const [linkBuyMercadoPago, setLinkBuyMercadoPago] = useState(false);
   let intervalId;
@@ -47,6 +49,8 @@ function Paga(props) {
     if (event) {
       event.preventDefault();
     }
+
+    closeModal(); // Close the previous modal if it's open
 
     const body = {
       transaction_amount: transactionAmount,
@@ -83,6 +87,7 @@ function Paga(props) {
         if (response.data.status === "approved") {
           setStatusPayment(true);
           clearInterval(intervalId);
+          setShowModal(true); // Show the payment modal when payment is approved
         }
       });
     }
@@ -98,18 +103,15 @@ function Paga(props) {
 
   useEffect(() => {
     handleSubmit();
-  }, [formData]);
-  
+  }, []); // Run once on component mount
+
   const closeModal = () => {
     setShowModal(false);
   };
 
   return (
     <div className="pix">
-  
-   
-  
-    <header>
+      <header>
         {linkBuyMercadoPago && !statusPayment && (
           <iframe
             src={linkBuyMercadoPago}
