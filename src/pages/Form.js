@@ -123,14 +123,19 @@ const handlePaymentAmountChange = (event, value) => {
   className="textarea-large"
 ></textarea>
 
-  <CurrencyInput
+<CurrencyInput
   id="value"
   placeholder="Valor"
   prefix="R$"
   decimalSeparator=","
   groupSeparator="."
-  onValueChange={(value) => setValue(value)}
+  onValueChange={(value) => {
+    // Substituir vírgula por ponto
+    const modifiedValue = value.replace(",", ".");
+    setValue(modifiedValue);
+  }}
 />
+
 <button className="bt" onClick={() => {
   if (nome && email && phone && address && value) {
     criarDado();
