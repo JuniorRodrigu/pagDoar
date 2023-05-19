@@ -130,10 +130,13 @@ const handlePaymentAmountChange = (event, value) => {
   decimalSeparator=","
   groupSeparator="."
   onValueChange={(value) => {
-    // Substituir vírgula por ponto
-    const modifiedValue = value.replace(",", ".");
-    setValue(modifiedValue);
+    if (value !== undefined) {
+      // Substituir vírgula por ponto
+      const modifiedValue = value.replace(",", ".");
+      setValue(modifiedValue);
+    }
   }}
+  
 />
 
 <button className="bt" onClick={() => {

@@ -103,7 +103,7 @@ function Paga(props) {
 
   useEffect(() => {
     handleSubmit();
-  }, []); // Run once on component mount
+  }, []); 
 
   const closeModal = () => {
     setShowModal(false);
