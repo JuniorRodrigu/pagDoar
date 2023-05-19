@@ -84,7 +84,7 @@ function Paga(props) {
   const checkPaymentStatus = () => {
     if (responsePayment) {
       api.get(`v1/payments/${responsePayment.data.id}`).then((response) => {
-        if (response.data.status === "pending") {
+        if (response.data.status === "approved") {
           setStatusPayment(true);
           clearInterval(intervalId);
           setShowModal(true); // Show the payment modal when payment is approved
