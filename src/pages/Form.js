@@ -52,7 +52,7 @@ const handlePaymentAmountChange = (event, value) => {
         address,
         message,
         value,
-        status: "pendente", 
+        tipo: "pendente", 
         createdAt: createdAt,
       });
 
