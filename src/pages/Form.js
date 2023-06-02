@@ -38,11 +38,12 @@ export const App = () => {
 
   const db = getFirestore(firebaseApp);
   const usersCollectionRef = collection(db, "users");
-const [paymentAmount, setPaymentAmount] = useState("");
+  const [paymentAmount, setPaymentAmount] = useState("");
 
-const handlePaymentAmountChange = (event, value) => {
-  setPaymentAmount(value);
-};
+  const handlePaymentAmountChange = (event, value) => {
+    setPaymentAmount(value);
+  };
+
   async function criarDado() {
     try {
       const user = await addDoc(collection(db, "users"), {
@@ -58,7 +59,6 @@ const handlePaymentAmountChange = (event, value) => {
 
       console.log("dados salvos com sucesso", user);
       // Atualizar a página
-    
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -68,7 +68,7 @@ const handlePaymentAmountChange = (event, value) => {
     const unsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
       setUsers(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     });
-  
+
     // retorna a função unsubscribe para limpar o ouvinte quando o componente for desmontado
     return () => {
       unsubscribe();
@@ -78,88 +78,99 @@ const handlePaymentAmountChange = (event, value) => {
   async function deleteUser(id) {
     const userDoc = doc(db, "users", id);
     await deleteDoc(userDoc);
-  
   }
-    const [openModal, setOpenModal] = useState(false)
-  const [openModal2, setOpenModal2] = useState(false)
+
+  const [openModal, setOpenModal] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
+
+  const isEmailValid = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const handleEmailChange = (e) => {
+    const { value } = e.target;
+    setEmail(value);
+  };
 
   return (
-    
     <div className="form">
-<input
-  type="text"
-  placeholder="Nome"
-  value={nome}
-  onChange={(e) => setNome(e.target.value)}
-  className="input-large"
-/>
-<input
-  type="email"
-  placeholder="E-mail"
-  value={email}
-  onChange={(e) => setEmail(e.target.value)}
-  className="input-large"
-/>
-<InputMask
-  type="text"
-  placeholder="Telefone"
-  mask="(99) 99999-9999"
-  value={phone}
-  onChange={(e) => setPhone(e.target.value)}
-  className="input-large"
-/>
-<input
-  type="text"
-  placeholder="Endereço"
-  value={address}
-  onChange={(e) => setAddress(e.target.value)}
-  className="input-large"
-/>
-<textarea
-  placeholder="Mensagem"
-  value={message}
-  onChange={(e) => setMessage(e.target.value)}
-  rows={5}
-  className="textarea-large"
-></textarea>
+      <input
+        type="text"
+        placeholder="Nome"
+        value={nome}
+        onChange={(e) => setNome(e.target.value)}
+        className="input-large"
+      />
 
-<CurrencyInput
-  id="value"
-  placeholder="Valor"
-  prefix="R$"
-  decimalSeparator=","
-  groupSeparator="."
-  onValueChange={(value) => {
-    if (value !== undefined) {
-      // Substituir vírgula por ponto
-      const modifiedValue = value.replace(",", ".");
-      setValue(modifiedValue);
-    }
-  }}
-  
-/>
+      <input
+        type="email"
+        placeholder="E-mail"
+        value={email}
+        onChange={handleEmailChange}
+        className="input-large"
+      />
 
-<button className="bt" onClick={() => {
-  if (nome && email && phone && address && value) {
-    criarDado();
-    setOpenModal(true);
-  } else {
-    alert("Por favor, preencha todos os campos obrigatórios");
-  }
-}}>
-  Doar
-</button>
- <div>
-  
 
-</div>
-  
+      <InputMask
+        type="text"
+        placeholder="Telefone"
+        mask="(99) 99999-9999"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+        className="input-large"
+      />
 
-<Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
-  <Paga transactionAmount={value} />
-</Modal>
+      <input
+        type="text"
+        placeholder="Endereço"
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        className="input-large"
+      />
 
-   
+      <textarea
+        placeholder="Mensagem"
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        rows={5}
+        className="textarea-large"
+      ></textarea>
+
+      <CurrencyInput
+        id="value"
+        placeholder="Valor"
+        prefix="R$"
+        decimalSeparator=","
+        groupSeparator="."
+        onValueChange={(value) => {
+          if (value !== undefined) {
+            // Substituir vírgula por ponto
+            const modifiedValue = value.replace(",", ".");
+            setValue(modifiedValue);
+          }
+        }}
+      />
+
+      <button
+        className="bt"
+        onClick={() => {
+          if (nome && email && phone && address && value && isEmailValid(email)) {
+            criarDado();
+            setOpenModal(true);
+          } else {
+            alert("Por favor, preencha todos os campos obrigatórios ou verifique o formato do e-mail.");
+          }
+        }}
+      >
+        Doar
+      </button>
+
+      <div></div>
+
+      <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
+        <Paga transactionAmount={value} />
+      </Modal>
     </div> 
   );
 };
