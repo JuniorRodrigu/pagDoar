@@ -159,7 +159,7 @@ export const App = () => {
             criarDado();
             setOpenModal(true);
           } else {
-            alert("Por favor, preencha todos os campos obrigatórios ou verifique o formato do e-mail.");
+            alert("Por favor, preencha todos os campos e verifique o formato do e-mail.");
           }
         }}
       >
