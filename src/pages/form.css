@@ -115,6 +115,17 @@ input[type="submit"]:hover {
 .modal-close-btn:hover {
   color: #ff0000;
 }
+.alert {
+  background-color: #f1b6bb;
+  color: #f02b3f;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+
+
 
 @media only screen and (max-width: 600px) {
   .form {

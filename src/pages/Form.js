@@ -17,7 +17,7 @@ import CurrencyInput from 'react-currency-input-field';
 import InputMask from "react-input-mask";
 import PagaComponent from "./Paga";
 import { serverTimestamp } from 'firebase/firestore';
-
+import Alert from "./Alert";
 
 const firebaseApp = initializeApp({
   apiKey: "AIzaSyCEZTV3TnxRBdtx7NqzT5-4AX7zsXUZL6E",
@@ -26,7 +26,6 @@ const firebaseApp = initializeApp({
 });
 
 export const App = () => {
-  
   const createdAt = serverTimestamp();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
@@ -35,6 +34,8 @@ export const App = () => {
   const [message, setMessage] = useState("");
   const [value, setValue] = useState("");
   const [users, setUsers] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const db = getFirestore(firebaseApp);
   const usersCollectionRef = collection(db, "users");
@@ -53,7 +54,7 @@ export const App = () => {
         address,
         message,
         value,
-        tipo: "pendente", 
+        tipo: "pendente",
         createdAt: createdAt,
       });
 
@@ -80,9 +81,6 @@ export const App = () => {
     await deleteDoc(userDoc);
   }
 
-  const [openModal, setOpenModal] = useState(false);
-  const [openModal2, setOpenModal2] = useState(false);
-
   const isEmailValid = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
@@ -91,6 +89,20 @@ export const App = () => {
   const handleEmailChange = (e) => {
     const { value } = e.target;
     setEmail(value);
+    setShowAlert(false); // Ocultar o alerta ao corrigir o campo de e-mail
+  };
+
+  const handleButtonClick = () => {
+    if (nome && email && phone && address && value && isEmailValid(email)) {
+      criarDado();
+      setOpenModal(true);
+    } else {
+      setShowAlert(true);
+    }
+  };
+
+  const handleAlertClose = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -110,7 +122,6 @@ export const App = () => {
         onChange={handleEmailChange}
         className="input-large"
       />
-
 
       <InputMask
         type="text"
@@ -152,26 +163,23 @@ export const App = () => {
         }}
       />
 
-      <button
-        className="bt"
-        onClick={() => {
-          if (nome && email && phone && address && value && isEmailValid(email)) {
-            criarDado();
-            setOpenModal(true);
-          } else {
-            alert("Por favor, preencha todos os campos e verifique o formato do e-mail.");
-          }
-        }}
-      >
+      <button className="bt" onClick={handleButtonClick}>
         Doar
       </button>
+
+      {showAlert && (
+        <Alert
+          message="Por favor, preencha todos os campos e verifique o formato do e-mail."
+          onClose={handleAlertClose}
+        />
+      )}
 
       <div></div>
 
       <Modal isOpen={openModal} setModalOpen={() => setOpenModal(!openModal)}>
         <Paga transactionAmount={value} />
       </Modal>
-    </div> 
+    </div>
   );
 };
 
