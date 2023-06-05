@@ -1,0 +1,54 @@
+* {
+    background-color: #ccc;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+   margin-left: 2%;
+   margin-top: 3%;
+    color: #333;
+  }
+  
+  table {
+    margin: 2%;
+    width: 96%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    border: 1px solid #098d70;
+    padding: 3px;
+  }
+  
+  th {
+    background-color: #098d70;
+  }
+  .tel{
+    width: 12%;
+  }
+  button {
+    background-color: #098d70;
+    color: #fff;
+    display: block;
+    margin: 0 auto;
+    padding: 6px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+ .msm{width: auto;}
+  
+  .last-added-user {
+    margin-top: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+  }
+  @media screen and (max-width: 768px) {
+    .tr-max {
+        display:none;
+    }
+    .tr-min {
+        display:table;
+    }
+}

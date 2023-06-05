@@ -1,16 +1,13 @@
-import { Link } from "react-router-dom";
-import Form from "./pages/Form";
-import Modal from "./Modal";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Teste from "./pages/Teste";
 
 function App() {
-
   return (
-    
-    <div>
-    
-   <Form/>
-   <Modal/>
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/teste" element={<Teste />} />
+    </Routes>
   );
 }
 
