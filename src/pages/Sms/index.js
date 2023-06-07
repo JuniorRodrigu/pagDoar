@@ -1,34 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const App = () => {
-  const sendSMS = async () => {
+  const [error, setError] = useState('');
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios.post(
-        'https://api.smsempresa.com.br/v1/send',
-        {
-          key: 'CFOUP0UBE0GMR2HSYYFTWTFZPFYFY8URBEDJS5Y78NAUYV9OIVYZHN81VNAN8P3PFU5J7FZ6MQNVOOO8AXFFW3T62O61U1XNIGE6A8V4LMU5CWA5LP25SWWHICK2GXU4',
-          type: '9', // 9 para SMS
-          number: '88988231924',
-          msg: 'Teste de envio.',
-          out: 'json' // Se desejar retorno em json ou xml
-        }
-      );
+      const response = await axios.post('http://localhost:3001/send-sms', {
+        numero: '+5588988231924',
+        mensagem: 'teste',
+      });
 
       console.log(response.data);
+      setSent(true);
     } catch (error) {
-      console.error('Erro ao enviar o SMS:', error);
+      console.error(error);
+      setError(error.message);
     }
-  };
-
-  const handleSendSMS = () => {
-    sendSMS();
   };
 
   return (
     <div>
-      {/* Outros componentes e elementos do seu aplicativo */}
-      <button onClick={handleSendSMS}>Enviar SMS</button>
+      {error && <p>{error}</p>}
+      {sent && <p>Mensagem enviada com sucesso!</p>}
+      <form onSubmit={handleSubmit}>
+        <button type="submit">Enviar SMS</button>
+      </form>
     </div>
   );
 };
