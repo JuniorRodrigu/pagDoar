@@ -9,7 +9,7 @@ const App = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://apisms.vercel.app/send-sms', {
+      const response = await axios.post('https://apisms.vercel.app', {
         numero: '+5588988231924',
         mensagem: 'teste',
       });
